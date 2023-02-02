@@ -5,6 +5,7 @@
 
 	// Get data from source
 	import meetups from './Meetups/meetups-store.js'
+	import MeetupDetail from './Meetups/MeetupDetail.svelte'
 
 	// Show/hide meetup edit
 	let editMode = ''
@@ -24,17 +25,46 @@
 	function cancelEdit() {
 		editMode = null
 	}
+
+	// Meetup detail
+	let page = 'meetups'
+	let pageData = {}
+
+	function showDetails(event) {
+		page = 'details'
+
+		// we get the id from the event detail of MeetupItem and assign it to pageData.id
+		pageData.id = event.detail
+	}
+
+	function closeDetails() {
+		page = 'meetups'
+		pageData = {}
+	}
 </script>
 
-<Header newMeetupBtn={() => (editMode = 'add')} />
+<secti>
+	{#if page === 'details'}
+		<MeetupDetail
+			id={pageData.id}
+			on:close-detail={() => (page = 'meetups')}
+		/>
+	{:else}
+		<Header newMeetupBtn={() => (editMode = 'add')} />
 
-{#if editMode === 'add'}
-	<EditMeetup
-		on:saveMeetup={addMeetup}
-		on:cancel={cancelEdit}
-	/>
-{/if}
+		{#if editMode === 'add'}
+			<EditMeetup
+				on:saveMeetup={addMeetup}
+				on:cancel={cancelEdit}
+			/>
+		{/if}
 
-<div class="flex flex-col container my-4 gap-y-2">
-	<MeetupGrid meetups={$meetups} />
-</div>
+		<div class="flex flex-col container my-4 gap-y-2">
+			<MeetupGrid
+				meetups={$meetups}
+				on:show-details={showDetails}
+				on:close-details={closeDetails}
+			/>
+		</div>
+	{/if}
+</secti>

@@ -1,7 +1,7 @@
 <script>
-    import MeetupItem from "./MeetupItem.svelte";
+	import MeetupItem from './MeetupItem.svelte'
 
-    export let meetups
+	export let meetups
 </script>
 
 <section class="grid grid-cols-2">
@@ -12,8 +12,9 @@
 			description={meetup.description}
 			imageUrl={meetup.imageUrl}
 			address={meetup.address}
-            email={meetup.email}
+			email={meetup.email}
 			isFavorite={meetup.isFavorite}
+			on:show-details
 		/>
 	{/each}
 </section>
