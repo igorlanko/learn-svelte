@@ -35,6 +35,20 @@ const customMeetupsStore = {
 			return [newMeetup, ...items]
 		})
 	},
+	updateMeetup: (id, meetupData) => {
+		meetups.update((items) => {
+			// Find the meetup with the id
+			const meetupIndex = items.findIndex((i) => i.id === id)
+			// Create a new meetup object with the new data
+			const updatedMeetup = { ...items[meetupIndex], meetupData }
+			// Create a new array with the updated meetup
+			const updatedMeetups = [...items]
+			// Replace the old meetup with the new one
+			updatedMeetups[meetupIndex] = updatedMeetup
+			// Return the new array
+			return updatedMeetups
+		})
+	},
 	toggleFavorite: (id) => {
 		meetups.update((items) => {
 			const updatedMeetup = { ...items.find((m) => m.id === id) }

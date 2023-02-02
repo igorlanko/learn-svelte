@@ -5,10 +5,12 @@
 	// Get data
 	import meetups from './meetups-store.js'
 
+	// UI
 	import TextInput from '../UI/TextInput.svelte'
 	import Button from '../UI/Button.svelte'
 	import Modal from '../UI/Modal.svelte'
 
+	// Validation
 	import { isEmpty, isValidEmail } from '../helpers/validation.js'
 
 	// Form capturing
@@ -17,6 +19,21 @@
 	let email = ''
 	let imageUrl = 'http://unsplash.it/1024/600?random'
 	let address = ''
+
+	// Editing existing meetup
+	export let id = null
+	if (id) {
+		const ubsubscribe = meetups.subscribe((items) => {
+			const selectedMeetup = items.find((i) => i.id === id)
+			title = selectedMeetup.title
+			description = selectedMeetup.description
+			email = selectedMeetup.email
+			imageUrl = selectedMeetup.imageUrl
+			address = selectedMeetup.address
+		})
+
+		ubsubscribe()
+	}
 
 	// Validation
 	// We use $: to make sure that the validation is triggered
@@ -46,7 +63,13 @@
 		}
 
 		// Add meetup to store
-		meetups.addMeetup(meetupData)
+		// If id is passed, we are editing an existing meetup
+		if (id) {
+			meetups.updateMeetup(id, meetupData)
+		// Otherwise, we are creating a new meetup
+		} else {
+			meetups.addMeetup(meetupData)
+		}
 
 		// Dispatching event to parent component to close modal
 		dispatch('saveMeetup')
