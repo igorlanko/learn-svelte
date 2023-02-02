@@ -1,11 +1,16 @@
 <script>
-	import { createEventDispatcher } from "svelte"
-	import Badge from "../UI/Badge.svelte"
-	const dispatch = createEventDispatcher()
+	import Badge from '../UI/Badge.svelte'
+	import Button from '../UI/Button.svelte'
 
-	import Button from "../UI/Button.svelte"
+	// Get data
+	import meetups from './meetups-store.js'
 
-	export let id
+	// Favorite
+	function toggleFavorite() {
+		meetups.toggleFavorite(id)
+	}
+
+	export let id // forwarding the id from toggleFavorite() to meetups-store.js
 	export let title
 	export let description
 	export let imageUrl
@@ -38,11 +43,11 @@
 				⬇️ Expand
 		</Button> -->
 		<Button
-			kind={isFavorite ? "secondary" : "primary"}
+			kind={isFavorite ? 'secondary' : 'primary'}
 			type="button"
-			on:click={() => dispatch("toggle-favorite", id)}
+			on:click={toggleFavorite}
 		>
-			{isFavorite ? "Unfavorite" : "⭐️ Favorite"}
+			{isFavorite ? 'Unfavorite' : '⭐️ Favorite'}
 		</Button>
 		<div>
 			<p class="text-xs">{address}</p>

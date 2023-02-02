@@ -1,19 +1,22 @@
 <script>
-	import { createEventDispatcher } from "svelte"
+	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
-	import TextInput from "../UI/TextInput.svelte"
-	import Button from "../UI/Button.svelte"
-	import Modal from "../UI/Modal.svelte"
+	// Get data
+	import meetups from './meetups-store.js'
 
-	import { isEmpty, isValidEmail } from "../helpers/validation.js"
+	import TextInput from '../UI/TextInput.svelte'
+	import Button from '../UI/Button.svelte'
+	import Modal from '../UI/Modal.svelte'
+
+	import { isEmpty, isValidEmail } from '../helpers/validation.js'
 
 	// Form capturing
-	let title = ""
-	let description = ""
-	let email = ""
-	let imageUrl = "http://unsplash.it/1024/600?random"
-	let address = ""
+	let title = ''
+	let description = ''
+	let email = ''
+	let imageUrl = 'http://unsplash.it/1024/600?random'
+	let address = ''
 
 	// Validation
 	// We use $: to make sure that the validation is triggered
@@ -33,17 +36,24 @@
 
 	// Passing data to parent component
 	function submitForm() {
-		dispatch("saveMeetup", {
-			imageUrl: imageUrl,
+		// Create meetup object
+		const meetupData = {
 			title: title,
-			email: email,
 			description: description,
+			imageUrl: imageUrl,
+			email: email,
 			address: address,
-		})
+		}
+
+		// Add meetup to store
+		meetups.addMeetup(meetupData)
+
+		// Dispatching event to parent component to close modal
+		dispatch('saveMeetup')
 	}
 
 	function cancel() {
-		dispatch("cancel")
+		dispatch('cancel')
 	}
 </script>
 
