@@ -22,7 +22,12 @@
 	export let isFavorite
 </script>
 
-<article class="col-span-2 mb-8 pb-2 bg-zinc-100 rounded-3xl overflow-hidden">
+<article
+	class="relative col-span-2 mb-8 pb-2 bg-zinc-100 rounded-3xl overflow-hidden"
+>
+	<div class="absolute left-2 top-2 z-10">
+		<Button on:click={() => dispatch('edit-meetup', id)}>Edit</Button>
+	</div>
 	<a
 		href="#"
 		class="group cursor-pointer"
@@ -47,12 +52,6 @@
 		</header>
 	</a>
 	<footer class="flex gap-x-2 px-2">
-		<!-- <Button
-			kind="secondary"
-			type="button"
-		>
-				⬇️ Expand
-		</Button> -->
 		<Button
 			kind={isFavorite ? 'secondary' : 'primary'}
 			type="button"

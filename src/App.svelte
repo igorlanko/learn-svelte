@@ -9,21 +9,30 @@
 
 	// Show/hide meetup edit
 	let editMode = ''
+	let editedId = null
 
-	function addMeetup(event) {
+	function savedMeetup(event) {
 		// meetups = [newMeetup, ...meetups]
 		editMode = null
+		editedId = null
+	}
+
+	// Editing meetup
+	function startEdit(event) {
+		editMode = 'edit'
+		editedId = event.detail
 	}
 
 	// Show/hide modal
 	let showModal = false
 
-	// Agreeing
+	// Agree to conditions
 	let closeable = false
 
 	// Cancel edit
 	function cancelEdit() {
 		editMode = null
+		editedId = null
 	}
 
 	// Meetup detail
@@ -50,12 +59,13 @@
 			on:close-detail={() => (page = 'meetups')}
 		/>
 	{:else}
-		<Header newMeetupBtn={() => (editMode = 'add')} />
+		<Header newMeetupBtn={() => (editMode = 'edit')} />
 
-		{#if editMode === 'add'}
+		{#if editMode === 'edit'}
 			<EditMeetup
-				on:saveMeetup={addMeetup}
+				on:saveMeetup={savedMeetup}
 				on:cancel={cancelEdit}
+				id={editedId}
 			/>
 		{/if}
 
@@ -64,6 +74,7 @@
 				meetups={$meetups}
 				on:show-details={showDetails}
 				on:close-details={closeDetails}
+				on:edit-meetup={startEdit}
 			/>
 		</div>
 	{/if}

@@ -66,7 +66,7 @@
 		// If id is passed, we are editing an existing meetup
 		if (id) {
 			meetups.updateMeetup(id, meetupData)
-		// Otherwise, we are creating a new meetup
+			// Otherwise, we are creating a new meetup
 		} else {
 			meetups.addMeetup(meetupData)
 		}
@@ -81,7 +81,7 @@
 </script>
 
 <Modal
-	title="Add new meetup"
+	title={id ? 'Edit meetup' : 'Add meetup'}
 	on:cancel
 >
 	<form on:submit|preventDefault={submitForm}>
