@@ -1,19 +1,39 @@
 <script>
-	import { createEventDispatcher } from "svelte"
+	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
-	import TextInput from "../UI/TextInput.svelte"
-	import Button from "../UI/Button.svelte"
-	import Modal from "../UI/Modal.svelte"
+	// Get data
+	import meetups from './meetups-store.js'
 
-	import { isEmpty, isValidEmail } from "../helpers/validation.js"
+	// UI
+	import TextInput from '../UI/TextInput.svelte'
+	import Button from '../UI/Button.svelte'
+	import Modal from '../UI/Modal.svelte'
+
+	// Validation
+	import { isEmpty, isValidEmail } from '../helpers/validation.js'
 
 	// Form capturing
-	let title = ""
-	let description = ""
-	let email = ""
-	let imageUrl = "http://unsplash.it/1024/600?random"
-	let address = ""
+	let title = ''
+	let description = ''
+	let email = ''
+	let imageUrl = 'http://unsplash.it/1024/600?random'
+	let address = ''
+
+	// Editing existing meetup
+	export let id = null
+	if (id) {
+		const ubsubscribe = meetups.subscribe((items) => {
+			const selectedMeetup = items.find((i) => i.id === id)
+			title = selectedMeetup.title
+			description = selectedMeetup.description
+			email = selectedMeetup.email
+			imageUrl = selectedMeetup.imageUrl
+			address = selectedMeetup.address
+		})
+
+		ubsubscribe()
+	}
 
 	// Validation
 	// We use $: to make sure that the validation is triggered
@@ -33,22 +53,35 @@
 
 	// Passing data to parent component
 	function submitForm() {
-		dispatch("saveMeetup", {
-			imageUrl: imageUrl,
+		// Create meetup object
+		const meetupData = {
 			title: title,
-			email: email,
 			description: description,
+			imageUrl: imageUrl,
+			email: email,
 			address: address,
-		})
+		}
+
+		// Add meetup to store
+		// If id is passed, we are editing an existing meetup
+		if (id) {
+			meetups.updateMeetup(id, meetupData)
+			// Otherwise, we are creating a new meetup
+		} else {
+			meetups.addMeetup(meetupData)
+		}
+
+		// Dispatching event to parent component to close modal
+		dispatch('saveMeetup')
 	}
 
 	function cancel() {
-		dispatch("cancel")
+		dispatch('cancel')
 	}
 </script>
 
 <Modal
-	title="Add new meetup"
+	title={id ? 'Edit meetup' : 'Add meetup'}
 	on:cancel
 >
 	<form on:submit|preventDefault={submitForm}>
