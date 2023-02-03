@@ -79,11 +79,24 @@
 		dispatch('cancel')
 	}
 
+	function keydownCancel(event) {
+		console.log(event.key)
+		switch (event.key) {
+			case 'Escape':
+				cancel()
+				break
+			default:
+				break
+		}
+	}
+
 	function deleteMeetup() {
 		meetups.deleteMeetup(id)
 		dispatch('cancel')
 	}
 </script>
+
+<svelte:window on:keydown={keydownCancel} />
 
 <Modal
 	title={id ? 'Edit meetup' : 'Add meetup'}
