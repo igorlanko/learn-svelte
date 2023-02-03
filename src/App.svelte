@@ -59,7 +59,7 @@
 			on:close-detail={() => (page = 'meetups')}
 		/>
 	{:else}
-		<Header newMeetupBtn={() => (editMode = 'edit')} />
+		<Header on:new-meetup={() => (editMode = 'edit')} />
 
 		{#if editMode === 'edit'}
 			<EditMeetup
