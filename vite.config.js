@@ -6,6 +6,6 @@ export default defineConfig({
 	base: "/learn-svelte/",
 	plugins: [svelte()],
 	build: {
-		outDir: './public'
+		outDir: './docs'
 	}
 })
