@@ -78,6 +78,11 @@
 	function cancel() {
 		dispatch('cancel')
 	}
+
+	function deleteMeetup() {
+		meetups.deleteMeetup(id)
+		dispatch('cancel')
+	}
 </script>
 
 <Modal
@@ -138,6 +143,12 @@
 			kind="secondary"
 			on:click={cancel}>Cancel</Button
 		>
+		{#if id}
+			<Button
+				kind="secondary"
+				on:click={deleteMeetup}>Delete</Button
+			>
+		{/if}
 		<Button
 			block={true}
 			kind="primary"
@@ -145,7 +156,7 @@
 			on:click={submitForm}
 			disabled={!formIsValid}
 		>
-			Add meetup
+			{id ? 'Update meetup' : 'Add meetup'}
 		</Button>
 	</div>
 </Modal>
