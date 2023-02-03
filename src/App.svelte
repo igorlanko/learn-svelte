@@ -52,7 +52,7 @@
 	}
 </script>
 
-<secti>
+<section>
 	{#if page === 'details'}
 		<MeetupDetail
 			id={pageData.id}
@@ -69,7 +69,7 @@
 			/>
 		{/if}
 
-		<div class="flex flex-col container my-4 gap-y-2">
+		<div class="max-w-md m-auto flex flex-col container my-4 gap-y-2">
 			<MeetupGrid
 				meetups={$meetups}
 				on:show-details={showDetails}
@@ -78,4 +78,4 @@
 			/>
 		</div>
 	{/if}
-</secti>
+</section>
