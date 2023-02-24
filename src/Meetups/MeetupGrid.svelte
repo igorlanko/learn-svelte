@@ -21,7 +21,7 @@
 <MeetupFilter on:select={setFilter} />
 
 <section class="grid grid-cols-2">
-	{#each filteredMeetups as meetup}
+	{#each filteredMeetups as meetup (meetup.id)}
 		<MeetupItem
 			id={meetup.id}
 			title={meetup.title}
