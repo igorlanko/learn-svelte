@@ -5,7 +5,7 @@
     // UI
     import Badge from '../UI/Badge.svelte'
     import Button from '../UI/Button.svelte'
-
+    import LoadingSpinner from '../UI/LoadingSpinner.svelte'
     // Animation
     import { scale } from 'svelte/transition'
     import { flip } from 'svelte/animate'
@@ -13,6 +13,7 @@
     // Get data
     import meetups from './meetups-store.js'
 
+    let isFavoriting = false
     export let id // forwarding the id from toggleFavorite() to meetups-store.js
     export let title
     export let description
@@ -23,6 +24,7 @@
 
     // Favorite
     function toggleFavorite() {
+        isFavoriting = true
         fetch(
             `https://learn-svelte-4835a-default-rtdb.firebaseio.com/meetups/${id}.json`,
             {
@@ -35,9 +37,11 @@
                 if (!res.ok) {
                     throw new Error("Couldn't toggle favorite.")
                 }
+                isFavoriting = false
                 meetups.toggleFavorite(id)
             })
             .catch((err) => {
+                isFavoriting = false
                 console.log(err)
             })
     }
@@ -74,13 +78,17 @@
         </header>
     </a>
     <footer class="flex gap-x-2 px-2">
-        <Button
-            kind={isFavorite ? 'secondary' : 'primary'}
-            type="button"
-            on:click={toggleFavorite}
-        >
-            {isFavorite ? 'Unfavorite' : '⭐️ Favorite'}
-        </Button>
+        {#if isFavoriting}
+            <LoadingSpinner />
+        {:else}
+            <Button
+                kind={isFavorite ? 'secondary' : 'primary'}
+                type="button"
+                on:click={toggleFavorite}
+            >
+                {isFavorite ? 'Unfavorite' : '⭐️ Favorite'}
+            </Button>
+        {/if}
         <div>
             <p class="text-xs">{address}</p>
             <p class="text-xs">{email}</p>
