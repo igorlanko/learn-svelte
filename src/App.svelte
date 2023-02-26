@@ -2,11 +2,19 @@
     import Header from './UI/Header.svelte'
     import MeetupGrid from './Meetups/MeetupGrid.svelte'
     import EditMeetup from './Meetups/EditMeetup.svelte'
+    import Error from './UI/Error.svelte'
 
     // Get data from source
     import meetups from './Meetups/meetups-store.js'
     import MeetupDetail from './Meetups/MeetupDetail.svelte'
     import LoadingSpinner from './UI/LoadingSpinner.svelte'
+
+    // Error handling
+    let error
+
+    function clearError() {
+        error = null
+    }
 
     // Show/hide meetup edit
     let editMode = ''
@@ -31,9 +39,10 @@
                 })
             }
             isLoading = false
-            meetups.setMeetups(loadedMeetups)
+            meetups.setMeetups(loadedMeetups.reverse())
         })
         .catch((err) => {
+            error = err
             isLoading = false
             console.log(err)
         })
@@ -80,6 +89,13 @@
 </script>
 
 <section>
+    {#if error}
+        <Error
+            message={error.message}
+            on:cancel={clearError}
+        />
+    {/if}
+
     {#if page === 'details'}
         <MeetupDetail
             id={pageData.id}
