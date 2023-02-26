@@ -2,8 +2,13 @@
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 
+	// UI
 	import Badge from '../UI/Badge.svelte'
 	import Button from '../UI/Button.svelte'
+
+	// Animation
+	import { scale } from 'svelte/transition'
+	import { flip } from 'svelte/animate'
 
 	// Get data
 	import meetups from './meetups-store.js'
@@ -24,6 +29,8 @@
 
 <article
 	class="relative col-span-2 mb-8 pb-2 bg-zinc-100 rounded-3xl overflow-hidden"
+	transition:scale
+
 >
 	<div class="absolute left-2 top-2 z-10">
 		<Button on:click={() => dispatch('edit-meetup', id)}>Edit</Button>
