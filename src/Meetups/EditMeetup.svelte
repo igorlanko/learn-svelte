@@ -133,6 +133,23 @@
     }
 
     function deleteMeetup() {
+        fetch(
+            `https://learn-svelte-4835a-default-rtdb.firebaseio.com/meetups/${id}.json`,
+            {
+                method: 'DELETE',
+            }
+        )
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(
+                        'Something went wrong trying to delete the meetup.'
+                    )
+                }
+            })
+            .catch((err) => {
+                console.log(err + "Couldn't delete the meetup.")
+            })
+
         meetups.deleteMeetup(id)
         dispatch('cancel')
     }
