@@ -22,8 +22,8 @@
 
 <section class="grid grid-cols-2">
     {#if filteredMeetups.length === 0}
-		<p>No meetups yet. Be the first to add one!</p>
-	{:else}
+        <p>No meetups yet. Be the first to add one!</p>
+    {:else}
         {#each filteredMeetups as meetup (meetup.id)}
             <MeetupItem
                 id={meetup.id}
