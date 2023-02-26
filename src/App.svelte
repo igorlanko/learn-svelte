@@ -30,10 +30,8 @@
                     id: key,
                 })
             }
-            setTimeout(() => {
-                isLoading = false
-                meetups.setMeetups(loadedMeetups)
-            }, 1000)
+            isLoading = false
+            meetups.setMeetups(loadedMeetups)
         })
         .catch((err) => {
             isLoading = false

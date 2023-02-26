@@ -65,7 +65,25 @@
         // Add meetup to store
         // If id is passed, we are editing an existing meetup
         if (id) {
+            fetch(
+                `https://learn-svelte-4835a-default-rtdb.firebaseio.com/meetups/${id}.json`,
+                {
+                    method: 'PATCH',
+                    body: JSON.stringify(meetupData),
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            )
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error('Something went wrong.')
+                    }
+                    meetups.updateMeetup(id, meetupData)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
             meetups.updateMeetup(id, meetupData)
+
             // Otherwise, we are creating a new meetup
         } else {
             fetch(
